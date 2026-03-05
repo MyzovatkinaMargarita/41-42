@@ -1,0 +1,40 @@
+import { makeAutoObservable } from "mobx";
+import type { RootStoreType } from "../../store/rootStore";
+import type { FiltersState } from "../../store/types";
+
+export class StudentTestPageVM {
+  constructor(private root: RootStoreType) {
+    makeAutoObservable(this, {}, { autoBind: true });
+  }
+}
+
+get store() {
+  return this.root.testsCatalogStore;
+}
+
+init() {
+  if (this.store.tests.length === 0 && this.store.attempts.length === 0) {
+    this.store.load();
+  }
+}
+
+onFiltersChange(f: FiltersState) {
+  this.store.setFilters(f);
+}
+
+
+get loading() {
+  return this.store.loading;
+}
+
+get error() {
+  return this.store.error;
+}
+
+get visibleTests() {
+  return this.store.visibleTests;
+}
+
+get lastAttemptByTest() {
+  return this.store.lastAttemptByTest;
+}
